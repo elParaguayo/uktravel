@@ -23,7 +23,8 @@ from datetime import datetime
 # We'll need the bus stop ID (5 number code) but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
 BASE_URL = ("http://countdown.api.tfl.gov.uk/interfaces/"
-            "ura/instant_V1?StopCode1={stopcode}")
+            "ura/instant_V1?StopCode1={stopcode}"
+            "&ReturnList=LineName,DestinationText,EstimatedTime")
 
 
 def __getBusData(stopcode):
@@ -116,7 +117,9 @@ def BusLookup(stopcode, filterbuses=None):
         # Create an empty dictionary for the details
         b = {}
         # Set the route number of the bus
-        b["route"] = bus[2]
+        b["route"] = bus[1]
+        # Set the destination of the bus
+        b["destination"] = bus[2]
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"] = __getBusTime(bus[3])
         # Add the bus to our list
